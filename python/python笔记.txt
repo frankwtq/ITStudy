@@ -1,0 +1,123 @@
+Python 编辑器：	
+	Windows 用IDLE
+	Linux 用kate（初级），vim（高级）
+Linux测试是否安装了python
+	打开shell，输入python -v
+python 引号使用：
+	'和''一样所有空白，即空格和制表符都照原样保留。
+	'''指示多行的字符串。可以在三引号中自由的使用单引号和双引号。
+	\'转译字符
+	自然字符串：指示不需要如转译符那样的特别处理的字符串：r“newlines \n”
+	unicode字符串
+	级连字符串：‘what\'s' 'your name ?'被转为：“What's your name？”。
+输入：
+	raw_input('Enter an integer : ')
+空格:
+	python中一个块中每一物理行的开头空格数需要一样，且不能使用tab键。
+python的循环
+	while和for循环后都可以接一个else ，while循环结束后会执行else。只有在while和for中用到break跳出时不会执行else。
+	while running：
+	for i in range(1,5):   #循环从1到4
+定义函数
+	def 撒有Hello（）：
+带参数函数
+	def printMax(a,b):
+global语句
+	def func（）：
+		global x
+	直接在函数内调用了函数外的变量，并能对其进行修改。
+默认参数
+	def say(message,times=1):
+	say('Hello')
+	day('world',5)
+关键参数
+	def func(a,b=5,c=10):
+	func(3,7)
+	func(25,c=24)
+	func(c=50,a=100)
+pass在python中表示空的语句块
+文档字符串docstrings
+	def printMax（x，y）：
+		'''Prints...
+
+		The two ...'''
+	print printMax.__doc__
+添加模块
+	import sys
+	from sys import argv
+模块名字
+	__name__是当前模块的名字，而用python运行的.py模块是主模块所以__name__为__main__。如果__name__在别调用的模块中，则是被调用的模块名字，被调用的模块名字就不是__main__。
+	这一特点可以使我们让我们的模块在本身被使用是才运行主块，而被别的模块调用时不运行主块。
+dir（）列出模块定义的标识符
+	import sys
+	dir（sys）
+
+	dir（）显示当前模块中定义的名称列表
+删除变量
+	del a
+列表
+	shoplist=['apple','mango','carrot','banana']
+	len(shoplist)
+	shoplist.append('rice') 在最后添加
+	shoplist.sort() 重排序
+	shoplist[0]
+	print shoplist
+元组	
+	zoo=（'wolf','elephant','penguin'）
+	len(zoo)
+	new_zoo=('monkey','dolphin',zoo)
+	len(new_zoo)
+	new_zoo[2][2]
+	singleton=(2,) 区分元组和表达式
+字典
+	ab={	'Swaroop' 	：'swaroopch’，
+		'Larry'	 	：'larry'}
+	print ab['Swaroop']
+	ab['Guido']='guido' 添加
+	del ab['Guido']
+	len(ab)
+	for name ,address in ab.items():
+序列
+	shoplist=['apple','mango','carrot','banana']
+	shoplistp[-1] 是'banana'
+	shoplist[1:3]
+	shoplist[2:]
+	shoplist[:]
+	name='swaroop'
+	name[1:3]
+	name[2:]
+	name[:]
+参考
+	shoplist=['apple','mango']
+	mylist=shoplist 其中mylist就像指向shoplist的指针，shoplist变了mylist也变
+	mylist=shoplist[:]	这就是复制了一份shoplist，mylist与shoplist互不干扰
+字符串的方法
+	name ='Swaroop'
+	name.startswith('Swa') 是否以Swa开头
+	'a' in name  name中是否有a
+	name.find('war') 那么中是否有war，有的话在第几个字符
+	mylist=['Brazil','Russia']
+	'_*_'.join(mylist) 用'_*_'内插到mylist中的元素之间形成字符串
+	name.replace('r','_') 将name字符串中的r换为_
+time模块
+	time.strftime('%Y%m%d%H%M%S') 返回当前时间
+os模块
+	os.system() 执行shell中的命令
+	os.path.exists() 判断是否存在路径
+	os.mkdir() 创建目录
+linux中tar压缩
+	tar -cvzf filename_backup filename_source -x filename_untar
+输入函数
+	raw_input('Enter a comment -->')
+文件的读写
+	poem = 	'''Programming is fun
+	'''
+	poem1 = '''abcd
+	'''
+	f=file('poem.txt','w')
+	f.write(poem)
+	f.close()
+	f=file('poem.txt','a+')
+	f.write(poem1)
+	f.close()
+	实现文件的续写

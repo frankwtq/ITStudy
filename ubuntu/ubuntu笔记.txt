@@ -1,0 +1,76 @@
+1.1.9.?什么是 GNU?
+	GNU 项目，其发音为“guh-noo”，于1984年发起，目标是开发一个完整的 UNIX 类的操作系统－GNU 系统，它全部由自由软件组成。
+1.3.1.?目录和文件系统
+	/bin - 重要的二进制 (binary) 应用程序
+	/boot - 启动 (boot) 配置文件
+	/dev - 设备 (device) 文件
+	/etc - 配置文件、启动脚本等 (etc)
+	/home - 本地用户主 (home) 目录
+	/lib - 系统库 (libraries) 文件
+	/lost+found - 在根 (/) 目录下提供一个遗失+查找(lost+found) 系统
+	/media - 挂载可移动介质 (media)，诸如 CD、数码相机等
+	/mnt - 挂载 (mounted) 文件系统
+	/opt - 提供一个供可选的 (optional) 应用程序安装目录
+	/proc - 特殊的动态目录，用以维护系统信息和状态，包括当前运行中进程 (processes) 信息。
+	/root - root (root) 用户主文件夹，读作“slash-root”
+	/sbin - 重要的系统二进制 (system binaries) 文件
+	/sys - 系统 (system) 文件
+	/tmp - 临时(temporary)文件
+	/usr - 包含绝大部分所有用户(users)都能访问的应用程序和文件
+	/var - 经常变化的(variable)文件，诸如日志或数据库等
+1.3.2.?权限
+	用户(user)
+	适用于该文件的所有者
+	组(group)
+	适用于该文件所属的组
+	其他(other)
+	适用于所有其他用户
+
+	读(read)
+	允许显示/打开该文件 可以显示目录内容
+	写(write)
+	可以编辑或删除该文件 可以更改目录内容
+	可执行(execute)
+	可执行文件可以作为程序运行 可以进入该目录
+1.3.3.?root 用户和 sudo 命令
+	欲使用 "root" 终端，请在命令行里输入“sudo -i”。
+1.3.4.1.?启动终端
+	要启动一个终端，可以选择 应用程序 → 附件 → 终端。
+	快捷方式：Ctrl + Alt + T
+	ALT+F2 Run a command: gnome-terminal
+1.3.4.2.?常用命令
+查看目录： ls
+ls (List) 用不同颜色、经过排列的文本列出目录下的文件。
+创建目录： mkdir (目录名)
+mkdir (MaKeDIRectory) 命令可以创建目录。
+切换目录： cd (/directory/location)
+cd (ChangeDirectory) 命令可以从您的当前目录切换到您指定的任意目录。
+复制文件/目录： cp (源文件或目录名) (目标目录或文件名)
+cp (CoPy) 命令会拷贝您指定的任意文件。cp -r 命令则可以拷贝您指定的任意目录（注：包括该目录里的文件和子目录）。
+删除文件/目录： rm （文件或目录名）
+rm (ReMove) 可以删除您指定的任意文件。rm -rf 命令则可以删除您指定的任意目录（注：包括该目录里的文件和子目录）。
+重命名文件/目录： mv （文件或目录名）
+mv (MoVe) 命令可以重命名/移动您指定的任意文件或目录。
+查找文件/目录： locate （文件或目录名）
+切换到 root 用户 ，输入 “sudo -i ”或“sudo su -”, 退出 “exit”
+pwd 显示当前目录， pwd = print working directory
+ cd 或 cd ~ 进入用户的 home 目录 
+df 显示文件系统空间信息
+
+   df -h  用 M 和 G 做单位显示文件系统空间信息 -h 意思是 human-readable 
+du 显示目录的空间使用信息
+
+    du -sh /media/floppy 
+    -s 意思 summary  -h 意思 human-readable 
+ifconfig 显示系统的网络
+locate 命令会在您的计算机里搜索您指定的任意文件。它使用您系统中的文件索引以便进行快速查找：运行命令 updatedb 可以更新该索引。
+使用 Ctrl+Alt+F1 快捷键可以切换到第一个控制台。
+要切回桌面模式，可以使用 Ctrl+Alt+F7 快捷键。
+
+2.5.1.?安装/卸载 .deb 文件
+这些是Debian 软件包。这些与 Ubuntu 相关的软件包文件使用 .deb 后缀是因为 Ubuntu 与 Debian GNU/Linux 发行版有着紧密的关系。您将需要管理权限来安装 .deb 文件 (参见 第1.3.3节 ― root 用户和 sudo 命令)。
+要安装 .deb 文件，简单地双击它，然后选择 安装软件包 即可。
+或者，您也可以打开一个终端并输入：
+sudo dpkg -i package_file.deb 来安装 .deb 文件。
+如需卸载 .deb 文件，在您软件包管理器中反选它，或输入：
+sudo dpkg -r package_name
