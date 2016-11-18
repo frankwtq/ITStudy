@@ -1,0 +1,5 @@
+LAN:local area network，局域网
+WAN:wide area network,广域网
+WLAN:wirelessLAN,无线局域网
+VLAN:virtual LAN,虚拟局域网
+VPN:virtual privzte network,虚拟私人网络
