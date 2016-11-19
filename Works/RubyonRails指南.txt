@@ -1,0 +1,72 @@
+Ruby on Rails指南 Rails4.1
+入门
+创建Blog程序
+	rails new blog
+		主要文件：
+			app：控制器、模型、视图、帮助、邮件和静态资源文件；
+			config：路由、数据库
+			db：数据库的模式、数据库迁移文件
+
+启动服务器
+	rails server
+
+显示hello
+	rails generate controller welcome index
+	创建控制器，其中控制器包含一个index动作
+		会创建welcome控制器：app/controllers/welcome_controller.rb
+		会创建index视图：app/views/welcome/index.html.erb
+		路由：get 'welcome/index'
+设置程序的首页
+	在config/routes.rb中设置跟路由的动作
+		root 'welcome#index'	#http://localhost:3000会被路由到welcome中的index动作
+
+	？？其中get 'welcome/index'语句还没有搞懂什么意思
+	？？DSL domain-specificlanguage领域专属语言？
+	
+以上没有涉及到模型，就是没有数据库
+
+开始使用
+	resources方法，声明一个符合REST架构的资源，资源指一系列类似的对象，比如文章，人和动物。资源可以被创建、读取、更新和删除，CRUD。
+	
+	在config/routes.rb中加入
+		resource :articles
+	只要一保存，服务器就会生成routes.rb中的对应路由
+	resource作用：会定义若干必须的路由，分别可连接到articles控制器中的index,create,new,edit,show,update,destroy等
+	rake routes查看定义了的REST动作
+
+挖地基
+	此时只有路由，还没有控制器，
+	rails g controller articles
+	此时只有控制器，控制器中还没有动作，既控制器类中的方法
+	此时手动在app/controllers/articles_controller.rb中加入new类
+	此时有了控制器，有了动作，还缺少动作对应的视图
+	手动在app/views/articles中创建new.html.erb文件
+首个表单
+	.erb中form_for方法创建表单，url：articles_path中的articles_path方法告诉rails对应的地址是/articles,表单会向POST请求，这个路由对应于ArticlesController控制器的create动作
+	?? 	render plain: params[:article].inspect
+创建Article模型
+	模型的名字使用单数，对应的数据表名使用复数。
+	rails generate model Article title:string text:text
+	生成的文件中关注app/models/article.rb和db/migrate/2014..._create_articles.rb,后者用来创建数据库结构
+运行迁移
+	迁移是一个Ruby类，能简化创建和修改数据库结构的操作
+	使用rake db:migrate运行迁移，在开发环境中，所有相关的操作应用于config/database.yml文件中development区域设置的数据库上。
+在控制器中保存数据
+	修改create动作，使用Article模型把数据保存到数据库中
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+

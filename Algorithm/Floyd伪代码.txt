@@ -1,0 +1,7 @@
+a)　初始化：D[u,v]=A[u,v]
+b)　For k:=1 to n
+For i:=1 to n
+For j:=1 to n
+If D[i,j]>D[i,k]+D[k,j] Then
+D[i,j]:=D[i,k]+D[k,j];
+c)　算法结束：D即为所有点对的最短路径矩阵
