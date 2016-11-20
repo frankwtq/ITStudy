@@ -42,19 +42,71 @@ Ruby on Rails指南 Rails4.1
 	此时有了控制器，有了动作，还缺少动作对应的视图
 	手动在app/views/articles中创建new.html.erb文件
 首个表单
-	.erb中form_for方法创建表单，url：articles_path中的articles_path方法告诉rails对应的地址是/articles,表单会向POST请求，这个路由对应于ArticlesController控制器的create动作
+	.erb中form_for方法创建表单，url：articles_path中的articles_path方法告诉rails对应的地址是/articles,表单默认会发起POST请求，这个路由对应于ArticlesController控制器的create动作
 	?? 	render plain: params[:article].inspect
+	？？其中的plain:的冒号为生么在后面
 创建Article模型
 	模型的名字使用单数，对应的数据表名使用复数。
 	rails generate model Article title:string text:text
-	生成的文件中关注app/models/article.rb和db/migrate/2014..._create_articles.rb,后者用来创建数据库结构
+	生成的文件中关注app/models/article.rb和db/migrate/2014..._create_articles.rb,后者用来创建数据库结构。
+	？？模型的字段在哪里定义的
 运行迁移
 	迁移是一个Ruby类，能简化创建和修改数据库结构的操作
 	使用rake db:migrate运行迁移，在开发环境中，所有相关的操作应用于config/database.yml文件中development区域设置的数据库上。
 在控制器中保存数据
 	修改create动作，使用Article模型把数据保存到数据库中
-	
-	
+	定义article_params函数允许动作中使用title和text属性
+显示文章
+	在控制器中添加show方法
+	@article=Article.find(params[:id])
+	从表中取出了一个记录，params类中:id存储的是当前提交的记录的id
+	完成show.html.erb
+列出所有文章
+	在控制器中添加index方法
+	@articles = Article.all
+	??.all应该是articles表中所有的记录
+	添加app/views/articles/index.html.erb文件，显示所有文章的信息
+添加链接
+	在app/views/welcome/index.html.erb中加入
+	<%= link+to 'My Blog', controller: 'articles' %>
+	link_to是Rails内置的视图帮助方法，根据提供的文本和地址创建超链接。当要到达的连接页面和当前所处页面的控制器不同时，需要controller指定控制器，没有写path，默认应该就是http://localhost:3000/articles
+	在index.html.erb中添加到new页面的链接
+	<%= link_to' 'New article', new_article_path %>
+	其中因为控制器相同，所以没有controller，直接是地址，new页面的前缀为new_article所以再在后面加上_path就可以了
+	添加new.html.erb中的连接
+	<%= link_to 'Back', articles_path %>
+	在show.html.erb中添加链接到index页面
+添加数据验证
+	在app/models/article.rb中添加验证传入的数据功能
+	class Article < ActiveRecord::Base
+		validates :title, presence: true, length: { minimum: 5 }
+	end
+	其中rails4.1中是继承与ActiveRecord::Base,但是在现在最新的rails5.0中Article是继承与ApplicationRecord，而ApplicationRecord是继承于ActiveRecord::Base的
+	添加验证后，create动作中的@article.save可能返回false，此时我们应该再次显示表单。所以需要修改new和create动作
+	在new中添加：
+		@article=Article.new(article_params)
+	这个是为了在后面的错误提示中用到的，因为在实现错误提示的函数调用时，需要一个nil的@article
+	create中的redirect_to @article会跳到show页面
+	render 'new'会跳到new页面
+	？？ render ‘show’和redirect_to @article有什么区别？？
+更新文章
+	控制器中添加	edit动作
+	@article = Article.find(params[:id])
+	这个在index页面中每个文章的后面的链接中，在创建链接时就传入了每个记录的相关参数，所以可以得到对应的:id
+	新建app/views/articles/edit.html.erb文件，和new.html.erb基本一样
+	其中的link_for会在提交时以PATCH方法发送请求，根据路由可以得知会跳转到控制器的update动作,跳转时url:article_path(@article)传递了实例对象@article，以便对其进行更新
+	在控制器中添加update动作
+	在index.html.erb中加入链接
+使用局部视图去掉视图中的重复代码
+	新建app/views/articles/_form.html.erb文件，实现表单功能
+	除了第一行form_for用法不一样外（注意其中的@article 不能是:article），其他代码都和new，edit一样，所以可以共用一个，因为@article是一个资源,对应于符合REST框架的路由，Rails能自动分辨使用那个地址和请求方法
+	修改new.html.erb和edit.html.erb
+删除文章
+	删除资源使用DELETE模式，路由会把请求发送到控制器中的destroy动作，所以需要添加destroy动作
+	不需要为这个动作编写视图，因为他会转向index动作
+	在index视图中添加delete
+	可以添加删除对话框
+	??method: :delete这个有问题??
 	
 	
 	
