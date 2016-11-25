@@ -1,0 +1,55 @@
+routes
+		Prefix 		   	Verb 		URI Pattern          		Controller#Action
+	StaticPages
+		XXXstatic_pages_home 	GET 	/static_pages/home(.:format) 		static_pages#homeXXX		*
+		XXXstatic_pages_help 	GET 	/static_pages/help(.:format) 		static_pages#helpXXX		**
+		root 			GET 	/                    			static_pages#home		*
+     		help 			GET 	/help(.:format)      			static_pages#help		**
+	Users
+		users_new 		GET 	/users/new(.:format) 			users#new			***
+		signup 			GET 	/signup(.:format)    			users#new			***
+
+controller
+	StaticPages
+		home
+		help
+	Users
+		new
+
+views
+	StaticPages
+		help.html.erb
+		home.html.erb
+	Users
+		new.html.erb
+
+model
+	User
+		id		integer		primary key
+		name		string
+		email		string
+		created_at	datetime
+		updated_at	datetime
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+model模型会生成
+	app/models/user.rb模型文件
+		模型文件中定义了继承于ActiveRecord::Base类的User类
+		添加验证属性存在性的代码
+	db/migrate/…_create_users.rb迁移文件	
+		迁移文件是一种精确修改数据库结构的方式，可以根据需求修改数据模型
+
+
+
