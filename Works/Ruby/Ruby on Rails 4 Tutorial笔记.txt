@@ -206,9 +206,28 @@ class User < ActiveRecord::Base
 before_save { self.email = email.downcase }
 . . .
 end
-
-
-
+6.3安全密码
+数据库中存储着加密后的密码，所以要在users表中加入password_digest
+这里要使用到gem 'bcrypt-ruby' , '3.0.1'
+生成一个迁移文件
+rails generate migration add_password_digest_to_users password_digest:string
+bundle exec rake db:migrate
+6.3.2确定密码
+虽然在控制层可以实现，但是最好还是在模型层实现，
+加入虚拟属性，password和password_confirmation，
+都在has_secure_password函数里
+6.3.3用户身份验证
+使用authenticate方法验证用户的密码
+7用户注册
+7.1显示用户信息
+加入调试信息
+<%= debug(params) if Rails.env.development? %>
+Rails定义了三个环节，分别是生产环境，开发环境和测试环境
+7.1.2Users资源
+REST框架把数据视为资源resource，可以创建，显示，更新和删除，分别对应了HTTP中的POST，GET，PATCH和DELETE
+请求方法
+resources :users 
+7.1.13使用预构件测试用户资料页面
 
 
 

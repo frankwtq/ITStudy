@@ -6,8 +6,17 @@ routes
 		root 			GET 	/                    			static_pages#home		*
      		help 			GET 	/help(.:format)      			static_pages#help		**
 	Users
-		users_new 		GET 	/users/new(.:format) 			users#new			***
+		XXXusers_new 		GET 	/users/new(.:format) 			users#newXXX			***
 		signup 			GET 	/signup(.:format)    			users#new			***
+		users 			GET    	/users(.:format)          		users#index
+						POST   	/users(.:format)          		users#create
+		new_user 		GET    	/users/new(.:format)      		users#new			***
+		edit_user 		GET    	/users/:id/edit(.:format) 		users#edit
+		user 			GET    	/users/:id(.:format)      		users#show
+						PATCH  	/users/:id(.:format)      		users#update
+						PUT    	/users/:id(.:format)      		users#update
+						DELETE 	/users/:id(.:format)      		users#destroy
+		
 
 controller
 	StaticPages
@@ -15,23 +24,27 @@ controller
 		help
 	Users
 		new
-
+		show
+		
 views
 	StaticPages
 		help.html.erb
 		home.html.erb
 	Users
 		new.html.erb
-
+		show.html.erb
+		
 model
 	User
-		id		integer		primary key
-		name		string
-		email		string
-		created_at	datetime
-		updated_at	datetime
-
-
+		id				integer		primary key
+		name			string
+		email			string
+		created_at		datetime
+		updated_at		datetime
+		password_digest
+		##password									虚拟属性，并不会存储到数据库结构中
+		##password_confirmation						虚拟属性
+													
 
 
 
