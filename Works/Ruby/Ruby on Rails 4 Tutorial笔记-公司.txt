@@ -1,0 +1,296 @@
+Ruby on Rails4 Tutorial笔记
+
+第一章 从零到部署
+1.2 搭建环境
+	IDE：RubyMine
+	1.2.2安装Ruby，RubyGems，Rails和Git
+		gem update --system 2.0.0
+		gem install rails --version 4.0.0 --no-ri --no-rdoc
+		Rails 4.0.0
+		代码1.5：指定gem功能的Gemfile文件
+		bundle update	
+		bundle install
+1.3 用git做版本控制
+	git config --global user.name "Your Name"
+	git config --global user.email your.email@example.com
+	代码1.7 加强版。gitignore文件
+	
+	git checkout -f
+		-f覆盖当前改动
+	git remote add origin https://github.com/mhartl/first_app.git	
+	git push -u origin master
+	分支
+	git checkout -b modify-README
+	git commit -a -m "Improve the README file"
+	合并
+	git checkout master
+	git merge modify-README
+	git branch -d modify-README
+
+	git checkout -b
+
+ topic-branch
+$ <really screw up the branch>
+$ git add .
+$ git commit -a -m "Major screw up"
+$ git checkout master
+$ git branch -D topic-branch
+
+-D即使还没有合并，也会删除分支
+推送
+git push
+1.4 部署
+
+第三章 基本静态页面
+rails new sample_app --skip-test-unit
+使用代码3.1编辑Gemfile
+
+安装和包含新gem
+$ bundle install --without production
+$ bundle update
+$ bundle install
+
+让Rails使用RSpec而不用Test：：Unit
+rails generate rspec:install
+
+初始化Git
+$ git init
+$ git add .
+$ git commit -m "Initial commit"
+
+$ git mv README.rdoc README.md
+$ git commit -am "Improve the README"
+
+$ git remote add origin https://github.com/<username>/sample_app.git
+$ git push -u origin master
+
+3.1静态页面
+新建分支
+git checkout -b static-pages
+
+生成StaticPages控制器
+rails generate controller StaticPages home help --no-test-framework
+
+静态页面：
+	控制器：StaticPages
+	动作：home;help
+
+可以撤销这个操作：
+rails generate controller FooBars baz quux
+rails destroy controller FooBars baz quux
+
+为home生成视图
+app/views/static_pages/home.html.erb
+<h1>StaticPages#home</h1>
+<p>Find me in app/views/static_pages/home.html.erb</p>
+
+为help生成视图
+app/views/static_pages/help.html.erb
+<h1>StaticPages#help</h1>
+<p>Find me in app/views/static_pages/help.html.erb</p>
+
+$ git add .
+$ git commit -m "Add a StaticPages controller"
+
+3.2第一个测试
+为静态页面生成继承测试request spec
+rails generate integration_test static_pages
+
+测试home内容的代码
+spec/requests/static_pages_spec.rb
+require 'spec_helper'
+describe "Static pages" do
+describe "Home page" do
+it "should have the content 'Sample App'" do
+visit '/static_pages/home'
+expect(page).to have_content('Sample App')
+end
+end
+end
+
+把CapybaraDSL加入RSpec帮助文件
+spec/spec_helper.rb
+# This file is copied to spec/ when you run 'rails generate rspec:install'
+..
+RSpec.configure do |config|
+...
+config.include Capybara::DSL
+end
+
+bundle exec rspec spec/requests/static_pages_spec.rb
+
+
+
+Capybara
+
+
+创建了home和help动作，完成了对应页面的简单测试
+现在来加入点动态内容
+
+3.3有点动态内容的页面
+	使用了layout布局文件app/views/layout/application.rb来消除home和help的重复部分
+
+5完善布局
+	之前的布局太简单，我们需要加上一些结构，会使用bootstrap
+
+5.1.1加入网站导航
+bootstrap
+sass和asset pipeline
+
+5.3.1路由测试
+完成地址到具名路由的转换
+
+5.3.4简化RSpec测试代码
+新建spec/support文件，创建RSpec通用函数utilities.rb来保存full_title方法
+RSpec会自动加载spec/support目录中的文件
+使用了subject {page};before {visit root_path};it {should have_content(‘’)}
+
+5.4 用户注册第一步
+	创建Users控制器
+5.4.2 注册页面的URL地址
+	把/users/new映射到/signup
+	先编写集成测试
+	使测试通过
+
+6 用户模型
+6.1 User模型
+6.1.1 数据库迁移，创建数据结构
+	生成用户模型
+	执行迁移
+6.1.3 在沙河模式中创建，查询，更新用户对象
+	user = User.new(name: "Michael Hartl", email: "mhartl@example.com")
+user.save
+User.create(name: "A Nother", email: "another@example.org")
+foo.destroy
+User.find(1)
+User.find_by_email("mhartl@example.com")
+User.find_by(email: "mhartl@example.com")
+User.first
+User.all
+user.update_attributes(name: "The Dude", email: "dude@abides.org")
+user.update_attribute(:name, "The Dude")
+6.2 用户数据验证
+6.2.1 用户模型测试
+$ bundle exec rake db:migrate
+$ bundle exec rake test:prepare	
+	把开发数据库db/development.sqlite3中的数据模型复制到测试数据库db/test.sqlite3中
+$ bundle exec rspec spec/models/user_spec.rb
+6.2.2 验证存在性
+user.valid?
+user.errors.full_messages
+6.2.3 长度验证
+validates :name, presence:true, length: {maximum:50}
+        validates :email, presence:true
+邮箱格式验证
+validates :name, presence:true, length: {maximum:50}
+        VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+        validates :email, presence:true, format: { with: VALID_EMAIL_REGEX }
+6.2.5 唯一性验证
+测试
+验证
+validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
+uniqueness: { case_sensitive: false }
+唯一性验证的不足
+不能应对并发，解决方法：在数据库层也加上唯一性限制
+rails generate migration add_index_to_users_email
+class AddIndexToUsersEmail < ActiveRecord::Migration
+def change
+add_index :users, :email, unique: true
+end
+end
+bundle exec rake db:migrate
+
+使用回调函数before_save在用户存入数据库之前强行把Email地址转换为小写字母形式，因为不是所有数据库适配器的索引都区分大小写。回调函数，在ActiveRecord对象生命周期的特定时刻调用。
+app/models/user.rb
+class User < ActiveRecord::Base
+before_save { self.email = email.downcase }
+. . .
+end
+
+
+…
+
+
+
+
+7.1.3 使用预构件测试用户资料页面
+使用FactoryGirl完成
+7.1.4 添加Gravatar头像和侧边栏
+7.2 注册表单
+测试用户注册功能
+
+
+8 登录和退出
+session是两台电脑之间的半永久性连接，我们就是利用他来实现登录的功能，网络中常见的session处理方式有好几几种：可以在用户关闭浏览器后清楚session也可以提供一个记住我的单选框，让用户选择永久保存，知道用户退出后session才会失效。
+Sessions 资源是利用cookie来存储数据的，cookie是存储在浏览器中的简单文本。
+
+flash.now就是专门用来在重新渲染的页面中现实Flash消息，在发送新的请求之后，Flash消息就是消失。
+
+我们计划在浏览器中存储这个base64权标，在数据库中存储加密后的版本，即便整个数据库都泄露了，攻击者也无法使用记忆权标登入网站。
+真实的应用程序都会自动登入刚注册的用户（这样做的一个副作用就是穿件了一个新的记忆权标），但是我们不想学么做，我们要用一种更好的方式，确保一开始用户就有可用的记忆权标。为此我们要使用毁掉函数生成权标。
+调用before_create
+
+9 更新、现实和删除用户
+因为浏览器本身并不支持发送PATCH请求，所以Rails就要早POST请求中使用这个隐藏字段伪造一个PATCH请求
+
+直接发送HTTP请求时，我们需要处理更底层的response对象，和Capybara提供的page对象不同，我们可以使用response测试服务器的响应
+
+使用before_action方法实现权限限制，这个方法会在指定的动作执行之前，先允许指定的方法
+
+flash[:notice]加上flash[:success]和flash[:error]就是我们要介绍的三种Flash消息
+
+Gemfile中加入faker，使用这个gem，可以使用半真实的名字和Email地址创建实例用户
+
+toggle!方法把admin属性的值从false转变为true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
