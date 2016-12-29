@@ -1,0 +1,10 @@
+使用Ruby on Rails来学习Web开发
+目标：
+	1.完成《Ruby on Rails Tutorial 4》中的任务：使用Ruby on Rails搭建一个自己的微博。
+	2.参照《Ruby on Rails Tutorial 4》自己搭建一个博客。
+
+过程记录
+任务1：
+
+《Ruby on Rails Tutorial 4》作者：Michael Hartl，DHH ??David Heinemeier Hansson??
+十五分钟博客视频

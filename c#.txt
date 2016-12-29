@@ -1,0 +1,4 @@
+C#
+可以做后台，主要是ASP.NET
+可以做游戏、VR/AR，主要是unity3d。https://unity3d.com/cn/
+可以做移动跨平台，主要是xamarin和mono, 这两个框架都是一家公司的，xamarin核就是用的mono，微软现在主打xamarin。https://www.xamarin.com/
